@@ -17,9 +17,16 @@ setwd( dt$wd.mastermodel <- getwd() )
 # read Q-xx-MTX
 setwd("..")
 require(openxlsx)
-dt$qxxmtx <- print( dir( pattern = "Q-xx-MTX-")[length(dir( pattern = "Q-xx-MTX-"))] )
-istprozent <- openxlsx::read.xlsx(dt$qxxmtx, sheet = "p_IST_g")
-istprozent <- rbind.fill(istprozent)
+
+dir( pattern = "Q-xx-MTX-")
+dt$qxxmtx1 <- "Q-xx-MTX-00022-V01-00_Fanta_Lemon_Zero.xlsx"
+dt$qxxmtx2 <- "Q-xx-MTX-00023-V01-00_Fanta_Lemon_Zero.xlsx"
+
+istprozent1 <- openxlsx::read.xlsx(dt$qxxmtx1, sheet = "p_IST_g")
+istprozent2 <- openxlsx::read.xlsx(dt$qxxmtx2, sheet = "p_IST_g")
+istprozent2 <- istprozent2[ 1:6 , 1:2]
+istprozent <- rbind.fill(list(istprozent1, istprozent2))
+istprozent
 names(istprozent)[1] <- "Probe_Anteil"
 
 if( Acid == T){
@@ -30,7 +37,7 @@ if( Acid == T){
 
 # Model parameter ####
 setwd(dt$wd.mastermodel)
-dt$model$para <- print(colnames(istprozent)[ - c(1, 8) ])
+dt$model$para <- print(colnames(istprozent)[ - c(1) ])
 
 # read spc files ####
 meapre_s <- data.table()

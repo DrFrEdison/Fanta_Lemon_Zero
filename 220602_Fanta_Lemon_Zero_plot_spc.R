@@ -14,10 +14,18 @@ setwd( dt$wd.mastermodel <- getwd() )
 # read Q-xx-MTX ####
 setwd("..")
 require(openxlsx)
-dt$qxxmtx <- print( dir( pattern = "Q-xx-MTX-")[length(dir( pattern = "Q-xx-MTX-"))] )
-dt$qxxmtx <- openxlsx::read.xlsx(dt$qxxmtx, sheet = "Zugabe_p")
-head(dt$qxxmtx)
+dir( pattern = "Q-xx-MTX-")
+dt$qxxmtx1 <- "Q-xx-MTX-00022-V01-00_Fanta_Lemon_Zero.xlsx"
+dt$qxxmtx2 <- "Q-xx-MTX-00023-V01-00_Fanta_Lemon_Zero.xlsx"
+dt$qxxmtx1 <- openxlsx::read.xlsx(dt$qxxmtx1, sheet = "Zugabe_p")
+dt$qxxmtx2 <- openxlsx::read.xlsx(dt$qxxmtx2, sheet = "Zugabe_p")
 
+dt$qxxmtx2 <- dt$qxxmtx2[ , 1:3]
+head(dt$qxxmtx1)
+head(dt$qxxmtx2)
+
+dt$qxxmtx <- rbind.fill(dt$qxxmtx1, dt$qxxmtx2)
+dt$qxxmtx
 # find parameter in Q-xx-MTX ####
 dt$parameter <- colnames(dt$qxxmtx)[ - c(1,2) ]
 dt$parameter <- c(dt$parameter, "FG")
