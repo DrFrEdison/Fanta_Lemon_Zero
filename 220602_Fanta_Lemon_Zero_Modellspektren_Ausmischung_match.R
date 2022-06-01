@@ -4,7 +4,7 @@ dir( pattern = "Rsource" )
 source.file <- print(dir( pattern = "Rsource" )[ length( dir( pattern = "Rsource" ))])
 source( paste0(getwd(), "/", source.file) )
 
-Acid <- F # Acid column in MTX file ? 
+Acid <- T # Acid column in MTX file ? 
 
 # read in data ####
 setwd(dt$wd)

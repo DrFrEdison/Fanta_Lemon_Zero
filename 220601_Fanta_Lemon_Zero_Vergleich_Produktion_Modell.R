@@ -12,15 +12,14 @@ setwd("./csv")
 
 dir()
 bev <- list()
-bev$raw$prod <- fread("220101_220524_Nieder_Roden_L3_PET_CSD_Max Cherry_15_spc.csv", sep = ";", dec = ",")
-bev$raw$prod <- bev$raw$prod[ bev$raw$prod$X300 > .1 , ]
+bev$raw$prod <- fread("210101_220601_Moenchengladbach_G9_Fanta_Lemon_Zero_13_spc.csv", sep = ";", dec = ",")
+
+boxplot(bev$raw$prod$X270)
+# bev$raw$prod <- bev$raw$prod[ bev$raw$prod$X300 > .1 , ]
 bev$raw$prod <- bev$raw$prod[ round(seq(1, nrow(bev$raw$prod), len = 100), 0) , ]
 
 # bev$raw$Ausmischung <- read.csv2("220413_Mezzo_Mix_Zero_Modellspektren_Ausmischung_match.csv")
 # bev$raw$Ausmischung <- bev$raw$Ausmischung[ bev$raw$Ausmischung$Probe_Anteil != "SL" , ]
-
-# bev$raw$altes.model <- read.csv2("220413_Mezzo_Mix_Zero_Modellspektren_Ausmischung_match.csv")
-# bev$raw$altes.model <- bev$raw$altes.model[ bev$raw$altes.model$Probe_Anteil != "SL" , ]
 
 bev$trs <- lapply(bev$raw, function(x) .transfer_csv(x))
 
@@ -36,17 +35,13 @@ matplot( bev$trs$prod$wl
         , t(bev$trs$prod$spc)[ ]
         , type = "l", lty = 1, col = "darkgreen", add = F)
 
-matplot( bev$trs$altes.model$wl
-        , t(bev$trs$altes.model$spc)[ ]
-        , type = "l", lty = 1, col = "blue", add = T)
-
 legend("topright", c("Ausmischung"
                      , "Produktion"
-                     , "Altes Modell"
+#                     , "Altes Modell"
                      )
        , lty = 1, col = c("red"
                           , "darkgreen"
-                          , "blue"
+ #                         , "blue"
                           ), xpd = F)
 
 matplot(bev$trs$Ausmischung$wl
@@ -57,16 +52,12 @@ matplot(bev$trs$prod$wl
         , t(bev$trs$prod$spc1st)[]
         , type = "l", lty = 1, col = "darkgreen", add = T)
 
-matplot( bev$trs$altes.model$wl
-         , t(bev$trs$altes.model$spc1st)[ ]
-         , type = "l", lty = 1, col = "blue", add = T)
-
 legend("topright", c("Ausmischung"
                      , "Produktion"
-                     , "Altes Modell"
+#                     , "Altes Modell"
 )
 , lty = 1, col = c("red"
                    , "darkgreen"
-                   , "blue"
+ #                  , "blue"
 ), xpd = F)
 dev.off()
