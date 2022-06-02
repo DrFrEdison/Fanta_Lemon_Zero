@@ -24,15 +24,26 @@ dt$qxxmtx2 <- "Q-xx-MTX-00023-V01-00_Fanta_Lemon_Zero.xlsx"
 
 istprozent1 <- openxlsx::read.xlsx(dt$qxxmtx1, sheet = "p_IST_g")
 istprozent2 <- openxlsx::read.xlsx(dt$qxxmtx2, sheet = "p_IST_g")
-istprozent2 <- istprozent2[ 1:6 , 1:2]
+istprozent2 <- istprozent2[ 1:4 , ]
 istprozent <- rbind.fill(list(istprozent1, istprozent2))
+
+istprozent <- istprozent[ !is.na(istprozent$T1K) , ]
+
+istprozent$T3[ is.na(istprozent$T3) & istprozent$H2O < 100 ] <- istprozent$H2O[ is.na(istprozent$T3) & istprozent$H2O < 100 ]
+istprozent$T3[ is.na(istprozent$T3) & istprozent$H2O > 100 ] <- istprozent$T2[ is.na(istprozent$T3) & istprozent$H2O > 100 ]
+
 istprozent
 names(istprozent)[1] <- "Probe_Anteil"
 
 if( Acid == T){
-  Acid <- openxlsx::read.xlsx(dt$qxxmtx, sheet = "SA")
-  Acid <- as.numeric(gsub(",",".",Acid$Total[ - 1]))
-  istprozent <- cbind(istprozent, Acid)
+  Acid1 <- openxlsx::read.xlsx(dt$qxxmtx1, sheet = "SA")
+  Acid1 <- Acid1[ Acid1$Total != 0 , ]
+  Acid1 <- as.numeric(gsub(",",".",Acid1$Total[ - 1]))
+  Acid2 <- openxlsx::read.xlsx(dt$qxxmtx2, sheet = "SA")
+  Acid2 <- Acid2[ Acid2$Total != 0 , ]
+  Acid2 <- as.numeric(gsub(",",".",Acid2$Total[ - 1]))
+  
+  istprozent <- cbind(istprozent, Acid = c(Acid1, Acid2))
 }
 
 # Model parameter ####
@@ -114,9 +125,10 @@ mea_s_spc$Probe
 mea_s_spc$Probe_Anteil[grep("_FG_",mea_s_spc$files_spc)] <- "FG_100%"
 istprozent$Probe_Anteil[ grep(paste("FG"), istprozent$Probe_Anteil) ] <- paste0("FG", "_100%")
 
+# for(i in 1:length(dt$model$para)){
 for(i in 1:length(dt$model$para)){
   
-  para_prozent <- gsub(" ", "", gsub("_", ",", gsub("%", "", gsub(dt$model$para[i], "", istprozent[ , 1][ grep( dt$model$para[i] , istprozent[ , 1]) ]))))
+  para_prozent <- gsub(" ", "", gsub("_", ",", gsub("%", "", gsub(dt$model$para[i], "", istprozent[ , 1][ grep( paste0(dt$model$para[i], " ") , istprozent[ , 1]) ]))))
   
   para_prozent_flag <- formatC(as.numeric(para_prozent), width = 2, format = "d", flag = "0")
   

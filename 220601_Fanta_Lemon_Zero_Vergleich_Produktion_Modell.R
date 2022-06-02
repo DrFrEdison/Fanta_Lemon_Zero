@@ -18,7 +18,7 @@ boxplot(bev$raw$prod$X270)
 # bev$raw$prod <- bev$raw$prod[ bev$raw$prod$X300 > .1 , ]
 bev$raw$prod <- bev$raw$prod[ round(seq(1, nrow(bev$raw$prod), len = 100), 0) , ]
 
-# bev$raw$Ausmischung <- read.csv2("220413_Mezzo_Mix_Zero_Modellspektren_Ausmischung_match.csv")
+bev$raw$Ausmischung <- read.csv2("220602_Fanta_Lemon_Zero_spc.csv")
 # bev$raw$Ausmischung <- bev$raw$Ausmischung[ bev$raw$Ausmischung$Probe_Anteil != "SL" , ]
 
 bev$trs <- lapply(bev$raw, function(x) .transfer_csv(x))
@@ -33,7 +33,7 @@ matplot( bev$trs$Ausmischung$wl
 
 matplot( bev$trs$prod$wl
         , t(bev$trs$prod$spc)[ ]
-        , type = "l", lty = 1, col = "darkgreen", add = F)
+        , type = "l", lty = 1, col = "darkgreen", add = T)
 
 legend("topright", c("Ausmischung"
                      , "Produktion"
