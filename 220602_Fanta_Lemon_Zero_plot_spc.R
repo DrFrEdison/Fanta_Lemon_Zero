@@ -83,4 +83,4 @@ mtx_plot_spc(dir = dt$wd.valset
              , pngplot = F
              , plotlyplot = T
              , recursive = T
-             , write = F)
+             , write = T)

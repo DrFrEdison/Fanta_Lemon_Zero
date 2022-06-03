@@ -12,7 +12,7 @@ setwd( print( this.path::this.dir() ) )
 setwd("..")
 dt$wd.git <- print( getwd() )
 
-.opendir(dt$wd)
+# .opendir(dt$wd)
 
 dt$para$location = "Moenchengladbach"
 dt$para$line = "G9"
@@ -23,11 +23,11 @@ dt$para$wl1 <- c(190)
 dt$para$wl2 <- c(598)
 dt$para$wl[[1]] <- seq(dt$para$wl1, dt$para$wl2, 1)
 
-dt$para$substance <- c("Acesulfam", "Aspartam", "T1", "T2B", "T2")
-dt$para$unit <- c( bquote("%"),  bquote("%"), bquote("%"), bquote("%"), bquote("%"))
-dt$para$ylab <- c( bquote("Acesulfam in %"), bquote("Aspartam in %"), bquote("T1 in %"), bquote("T2B in %"), bquote("T2 in %") )
+dt$para$substance <- c("Acid", "Acesulfam", "Aspartam", "T1", "T2B", "T2")
+dt$para$unit <- c( bquote("%"),  bquote("%"),  bquote("%"), bquote("%"), bquote("%"), bquote("%"))
+dt$para$ylab <- c( bquote("Acid in %"), bquote("Acesulfam in %"), bquote("Aspartam in %"), bquote("T1 in %"), bquote("T2B in %"), bquote("T2 in %") )
 # dt$para$mop.date <- "220522"
-dt$para$SOLL <- c(100,100,100,100,100)
+dt$para$SOLL <- c(100, 100,100,100,100,100)
 
 # #rename R files (run only once)
 # dt$para$Rfiles <- list.files(getwd(), pattern = ".R$", recursive = T)

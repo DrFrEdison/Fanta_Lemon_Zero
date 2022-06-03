@@ -29,8 +29,15 @@ istprozent <- rbind.fill(list(istprozent1, istprozent2))
 
 istprozent <- istprozent[ !is.na(istprozent$T1K) , ]
 
+# Anpassung H2O
 istprozent$T3[ is.na(istprozent$T3) & istprozent$H2O < 100 ] <- istprozent$H2O[ is.na(istprozent$T3) & istprozent$H2O < 100 ]
 istprozent$T3[ is.na(istprozent$T3) & istprozent$H2O > 100 ] <- istprozent$T2[ is.na(istprozent$T3) & istprozent$H2O > 100 ]
+
+# Anpassung Acesulfam
+istprozent$Acesulfam[ istprozent$T3  > 100 ] <- istprozent$T3[ istprozent$T3  > 100 ]
+
+# Anpassung Aspartam
+istprozent$Aspartam[ istprozent$T3  > 100 ] <- istprozent$T3[ istprozent$T3  > 100 ]
 
 istprozent
 names(istprozent)[1] <- "Probe_Anteil"
@@ -147,17 +154,20 @@ mea_s_spc$files_spc[which(is.na(mea_s_spc$Probe_Anteil))]
 # merge ####
 istprozentmeaspc <- merge.data.frame(istprozent,mea_s_spc,by=intersect(names(istprozent), names(mea_s_spc)), all=T)
 nrow(istprozentmeaspc)
-View(istprozentmeaspc)
 
 istprozentmeaspc <- istprozentmeaspc[order(istprozentmeaspc$Probe_Anteil), ]
 
 istprozentmeaspc <- istprozentmeaspc[,.moveme(names(istprozentmeaspc), "Probe first; files_spc first")]
 istprozentmeaspc$files_spc <- basename(istprozentmeaspc$files_spc)
 names(istprozentmeaspc) <- gsub("X","",names(istprozentmeaspc))
+View(istprozentmeaspc)
+
+istprozentmeaspc <- istprozentmeaspc[ !is.na(istprozentmeaspc$Probe) , ]
 
 for(i in dt$para$wl[[1]]) istprozentmeaspc[ , which(names(istprozentmeaspc) == i)] <- as.numeric(as.character(istprozentmeaspc[ , which(names(istprozentmeaspc) == i)]))
 if(any(duplicated(istprozentmeaspc))) istprozentmeaspc <- istprozentmeaspc[ - which(duplicated(istprozentmeaspc)) , ]
 
+istprozentmeaspc$Acid <- istprozentmeaspc$Acid / 5.96 * 100
 # write ####
 setwd(dt$wd.mastermodel)
 setwd("..")
